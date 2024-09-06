@@ -68,6 +68,46 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTableTemp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SnowflakeTemp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "YEAR_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "MONTH_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "TOTALSALES",
+						"type": "NUMBER",
+						"precision": 18,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "PUBLIC",
+					"table": "SALESAGGREGATE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SnowflakeTemp')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceSalesData')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -138,46 +178,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTableTemp')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SnowflakeTemp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeV2Table",
-				"schema": [
-					{
-						"name": "YEAR_ID",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "MONTH_ID",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "TOTALSALES",
-						"type": "NUMBER",
-						"precision": 18,
-						"scale": 2
-					}
-				],
-				"typeProperties": {
-					"schema": "PUBLIC",
-					"table": "SALESAGGREGATE"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SnowflakeTemp')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/dataflowTemp')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -229,7 +229,7 @@
 						"sourceSales filter(SALES>=2000) ~> filter",
 						"filter aggregate(groupBy(YEAR_ID,",
 						"          MONTH_ID),",
-						"     totalsales = sum(SALES)) ~> aggregate",
+						"     TOTALSALES = sum(SALES)) ~> aggregate",
 						"aggregate sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
