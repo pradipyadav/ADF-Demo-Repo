@@ -1,0 +1,9 @@
+{
+	"name": "pyazdatafactory",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dfb30545-5fd0-4fd1-8e04-edb8bf171d1f",
+		"tenantId": "410309cc-0220-4801-b3b1-3489cfef7877"
+	}
+}
