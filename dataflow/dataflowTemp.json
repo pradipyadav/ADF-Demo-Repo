@@ -18,7 +18,11 @@
 						"referenceName": "SnowflakeTableTemp",
 						"type": "DatasetReference"
 					},
-					"name": "sink"
+					"name": "sink",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureDataLakeStorageTemp",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
@@ -48,7 +52,7 @@
 				"sourceSales filter(SALES>=2000) ~> filter",
 				"filter aggregate(groupBy(YEAR_ID,",
 				"          MONTH_ID),",
-				"     totalsales = sum(SALES)) ~> aggregate",
+				"     TotalSales = sum(SALES)) ~> aggregate",
 				"aggregate sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
